@@ -43,6 +43,9 @@ CREATE TABLE books (
                 ON DELETE CASCADE
 );
 
+ALTER TABLE books
+    ADD CONSTRAINT books_unq UNIQUE(title);
+
 INSERT INTO books(author, title, published, genres) VALUES
     (1, 'Clean Code', 2008, ARRAY ['refactoring']),
     (1, 'Agile software development', 2002, ARRAY['agile', 'patterns', 'design']),
@@ -66,8 +69,16 @@ SELECT authors.name AS authors, books AS books
 UPDATE authors
     SET born = 1337
     WHERE id = 1
+    RETURNING *
 ;
 
 INSERT INTO authors(name, born, bookCount) VALUES
     ('Aksu', 1997, 0)
+;
+
+
+UPDATE authors
+    SET born = 1337
+    WHERE name = 'Reijo Mäki'
+    RETURNING *
 ;

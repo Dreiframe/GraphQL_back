@@ -3,7 +3,7 @@ import { startStandaloneServer } from '@apollo/server/standalone'
 import { v1 as uuid } from 'uuid'
 import { GraphQLError } from 'graphql'
 
-import { getAuthors } from './queries/authors'
+import { getAuthors, editAuthorBirth } from './queries/authors'
 
 // https://fullstackopen.com/en/part8/graph_ql_server
 
@@ -178,7 +178,8 @@ const resolvers = {
         books = books.concat(book)
         return book
       },
-      editAuthor: (parent: undefined, args: {name: string, setBornTo: number}) => {
+      editAuthor: async (parent: undefined, args: {name: string, setBornTo: number}) => {
+        /*
         let newAuthor
         if(args.setBornTo) {
             authors = authors.map(a => {
@@ -191,7 +192,13 @@ const resolvers = {
             })
         }
 
+        console.log(newAuthor)
+
         return newAuthor
+        */
+       // can only change born, needs to be able to add if name not exist
+       const newAuthor = await editAuthorBirth(args.name, args.setBornTo).then(res => {return res})
+       return newAuthor
       }
   }
 }

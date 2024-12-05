@@ -23,3 +23,26 @@ export const getAuthors = () => {
         )
     })
 }
+
+export const editAuthorBirth = (name: string, year: number) => {
+    return new Promise((resolve, reject) => {
+        pool.query(
+            'UPDATE authors SET born = $1 WHERE name = $2 RETURNING *',
+            [year, name],
+            (error, results) => {
+                if (error) {
+                    reject(error)
+                    return
+                }
+
+                if (results.rows.length === 0) {
+                    reject('name not found?')
+                    return
+                }
+    
+                resolve(results.rows[0])
+                return
+            }
+        )
+    })
+}
