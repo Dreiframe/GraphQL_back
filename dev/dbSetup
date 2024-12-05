@@ -1,0 +1,54 @@
+CREATE DATABASE graphql
+
+##########################################################################################################################################################
+CREATE TABLE authors (
+    author_id INT GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(100) NOT NULL,
+    born INT,
+    bookCount INT DEFAULT 0,
+    PRIMARY KEY(author_id)
+);
+
+ALTER TABLE authors
+    ADD CONSTRAINT authors_unq UNIQUE(name);
+
+INSERT INTO authors(name, born, bookCount) VALUES
+    ('Aksu', 1997, 0)
+;
+##########################################################################################################################################################
+CREATE TABLE books (
+    book_id INT GENERATED ALWAYS AS IDENTITY,
+    author_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    published INT,
+    genres VARCHAR[],
+
+    PRIMARY KEY(book_id),
+    CONSTRAINT fk_author
+        FOREIGN KEY(author_id)
+            REFERENCES authors(author_id)
+                ON DELETE CASCADE
+);
+
+INSERT INTO books(author_id, title, published, genres) VALUES
+    (1, 'book1', 2021, ARRAY ['genre1', 'genre2']),
+    (1, 'book2', 2022, ARRAY ['genre2', 'genre3']),
+    (1, 'book3', 2023, ARRAY ['genre1', 'genre3'])
+;
+
+SELECT genres[1] FROM books;
+##########################################################################################################################################################
+
+SELECT authors.name AS authors, books AS books
+    FROM authors, books
+    WHERE books.author_id = authors.author_id
+;
+
+UPDATE authors
+    SET born = 1337
+    WHERE author_id = 1
+;
+
+INSERT INTO authors(name, born, bookCount) VALUES
+    ('Aksu', 1997, 0)
+;

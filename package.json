@@ -12,13 +12,16 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.8.0",
+    "@types/pg": "^8.11.10",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
     "@apollo/server": "^4.11.2",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^16.4.7",
     "graphql": "^16.9.0",
+    "pg": "^8.13.1",
     "uuid": "^11.0.3"
   }
 }

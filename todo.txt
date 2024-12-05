@@ -1,4 +1,5 @@
 https://fullstackopen.com/en/part8/database_and_user_administration
 https://tikape-s18.mooc.fi/
+https://commandprompt.com/education/string-arrays-in-postgresql/
 
 backend database postgres
