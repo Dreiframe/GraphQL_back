@@ -3,6 +3,8 @@ import { startStandaloneServer } from '@apollo/server/standalone'
 import { v1 as uuid } from 'uuid'
 import { GraphQLError } from 'graphql'
 
+import { getAuthors } from './queries/authors'
+
 // https://fullstackopen.com/en/part8/graph_ql_server
 
 
@@ -146,7 +148,7 @@ const resolvers = {
         if (args.genre) booksPointer = booksPointer.filter(b => b.genres.includes(args.genre));
         return booksPointer
     },
-    allAuthors: () => authors
+    allAuthors: async () => await getAuthors()
   },
   Author: {
     bookCount: (parent: Author) => {

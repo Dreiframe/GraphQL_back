@@ -1,52 +1,71 @@
 CREATE DATABASE graphql
 
 ##########################################################################################################################################################
+DROP TABLE authors;
+
 CREATE TABLE authors (
-    author_id INT GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(100) NOT NULL,
     born INT,
     bookCount INT DEFAULT 0,
-    PRIMARY KEY(author_id)
+    PRIMARY KEY(id)
 );
 
 ALTER TABLE authors
     ADD CONSTRAINT authors_unq UNIQUE(name);
 
-INSERT INTO authors(name, born, bookCount) VALUES
-    ('Aksu', 1997, 0)
+INSERT INTO authors(name, born) VALUES
+    ('Robert Martin', 1952),
+    ('Martin Fowler', 1963),
+    ('Fyodor Dostoevsky', 1821)
 ;
+
+INSERT INTO authors(name) VALUES
+    ('Joshua Kerievsky'),
+    ('Sandi Metz')
+;
+
+SELECT * FROM authors;
 ##########################################################################################################################################################
+DROP TABLE books;
+
 CREATE TABLE books (
-    book_id INT GENERATED ALWAYS AS IDENTITY,
-    author_id INT NOT NULL,
+    id INT GENERATED ALWAYS AS IDENTITY,
+    author INT NOT NULL,
     title VARCHAR(100) NOT NULL,
     published INT,
     genres VARCHAR[],
 
-    PRIMARY KEY(book_id),
+    PRIMARY KEY(id),
     CONSTRAINT fk_author
-        FOREIGN KEY(author_id)
-            REFERENCES authors(author_id)
+        FOREIGN KEY(author)
+            REFERENCES authors(id)
                 ON DELETE CASCADE
 );
 
-INSERT INTO books(author_id, title, published, genres) VALUES
-    (1, 'book1', 2021, ARRAY ['genre1', 'genre2']),
-    (1, 'book2', 2022, ARRAY ['genre2', 'genre3']),
-    (1, 'book3', 2023, ARRAY ['genre1', 'genre3'])
+INSERT INTO books(author, title, published, genres) VALUES
+    (1, 'Clean Code', 2008, ARRAY ['refactoring']),
+    (1, 'Agile software development', 2002, ARRAY['agile', 'patterns', 'design']),
+    (2, 'Refactoring, edition 2', 2018, ARRAY['refactoring']),
+    (4, 'Refactoring to patterns', 2008, ARRAY['refactoring', 'patterns']),
+    (5, 'Practical Object-Oriented Design, An Agile Primer Using Ruby', 2012, ARRAY['refactoring', 'design']),
+    (3, 'Crime and punishment', 1866, ARRAY['classic', 'crime']),
+    (3, 'Demons', 1872, ARRAY['classic', 'revolution'])
 ;
+
+SELECT * FROM books;
 
 SELECT genres[1] FROM books;
 ##########################################################################################################################################################
 
 SELECT authors.name AS authors, books AS books
     FROM authors, books
-    WHERE books.author_id = authors.author_id
+    WHERE books.author= authors.id
 ;
 
 UPDATE authors
     SET born = 1337
-    WHERE author_id = 1
+    WHERE id = 1
 ;
 
 INSERT INTO authors(name, born, bookCount) VALUES
